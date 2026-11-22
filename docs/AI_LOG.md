@@ -27,3 +27,23 @@ configuration. These folders are placeholders for later milestones.
 
 
 
+
+## Milestone 3 
+
+### Prompt
+
+
+> Adapt the existing FlightPHP CRUD routes to this year's blog database. Return HTTP 201 when a record is created and 404 when it is missing. Hash passwords on the server and exclude password hashes from user responses.
+
+> Add a related-reading endpoint that searches Open Library by blog topic and returns book titles, authors, and links. Set a timeout, log provider failures, return a friendly error, and document the endpoint in Swagger.
+
+### Issues observed and fixed
+
+1. The first validation edit generated invalid PHP in the posts and comments
+   field maps. PHP lint found the bad entries. Codex corrected them and reran
+   lint successfully.
+2. The first HTTP CRUD test found that FlightPHP passes path IDs as strings.
+   The inherited integer-typed callbacks failed before reaching the service.
+   Codex updated the callbacks to accept strings and cast the matched IDs,
+   then reran CRUD checks successfully.
+

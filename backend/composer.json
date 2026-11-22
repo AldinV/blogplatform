@@ -1,0 +1,15 @@
+{
+  "require": {
+    "php": ">=8.0",
+    "ext-curl": "*",
+    "ext-mbstring": "*",
+    "ext-pdo_mysql": "*",
+    "mikecao/flight": "^3.17",
+    "zircote/swagger-php": "^3.3"
+  },
+  "config": {
+    "platform": {
+      "php": "8.0.30"
+    }
+  }
+}

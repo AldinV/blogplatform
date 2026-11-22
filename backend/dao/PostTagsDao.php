@@ -31,8 +31,7 @@ class PostTagsDao extends BaseDao {
   }
 
   public function replaceTagsForPost(int $postId, array $tagIds): void {
-    $this->begin();
-    try {
+    $this->transaction(function () use ($postId, $tagIds) {
       $this->execute("DELETE FROM `{$this->table}` WHERE post_id = :pid", [':pid' => $postId]);
       if (!empty($tagIds)) {
         $sql = "INSERT INTO `{$this->table}` (post_id, tag_id) VALUES (:pid, :tid)";
@@ -41,10 +40,6 @@ class PostTagsDao extends BaseDao {
           $stmt->execute([':pid' => $postId, ':tid' => (int)$tid]);
         }
       }
-      $this->commit();
-    } catch (Throwable $e) {
-      $this->rollback();
-      throw $e;
-    }
+    });
   }
 }
