@@ -3,8 +3,9 @@
 ## Project and current scope
 
 This is a student blog platform for IT 2001 Web Programming. Current work covers
-Milestones 1 and 2: a static SPA and a MySQL/PDO DAO layer. Frontend data is still
-mocked; backend authentication is not implemented. See README.md for features
+Milestones 1?3: a static SPA, MySQL/PDO DAOs, and a FlightPHP API with services,
+Swagger, and an Open Library endpoint. Frontend data is still mocked. Authentication
+and full frontend integration are planned for Milestone 4. See README.md for features
 and setup instructions.
 
 Implement the milestone or change requested by the user. Do not assume that later
@@ -17,12 +18,13 @@ milestone features are already available or add them without a relevant request.
 - Backend: PHP 8.0 or newer with PDO and the pdo_mysql extension.
 - Database: MySQL 8, InnoDB tables, and utf8mb4 encoding.
 - Configuration: backend/bootstrap.php loads backend/.env into environment variables.
-- Planned REST framework: FlightPHP; it is not implemented in the current DAO layer.
+- REST framework: FlightPHP, with OpenAPI annotations and Swagger UI.
 
 ## Folder structure
 
 - frontend/: HTML entry point, css/ for styles, js/ for browser logic, and assets/.
-- backend/dao/: database access; routes/ and services/ are reserved for later layers.
+- backend/dao/: database access; routes/ handles HTTP and services/ owns business logic.
+- backend/public/v1/docs/: Swagger UI and generated OpenAPI JSON.
 - backend/database.sql: schema and sample data; bootstrap.php: configuration loading;
   test_dao.php: DAO smoke test; .env.example: configuration template.
 - docs/: ERD and the milestone-by-milestone AI usage record in AI_LOG.md.
@@ -35,7 +37,7 @@ milestone features are already available or add them without a relevant request.
 - The five main entity DAOs inherit CRUD operations from BaseDao. PostTagsDao
   manages a composite-key relationship through its dedicated methods; do not use
   inherited methods that assume an id or created_at column on post_tags.
-- When implementing later milestones, use the flow: frontend service -> FlightPHP
+- When connecting the frontend, use the flow: frontend service -> FlightPHP
   route -> backend service -> DAO -> MySQL. Backend services own business rules
   and are the only application layer that calls DAOs. The CLI DAO test is a
   deliberate direct caller for verification.
@@ -43,6 +45,8 @@ milestone features are already available or add them without a relevant request.
   with AJAX-backed services when frontend integration is requested.
 - Use reusable middleware for planned JWT checks, role checks, request logging,
   and error handling. Do not implement these checks independently in every route.
+- Keep external API calls in backend services. Apply a timeout and record provider
+  failures in the ignored backend/logs/error.log file.
 
 ## Database and security rules
 

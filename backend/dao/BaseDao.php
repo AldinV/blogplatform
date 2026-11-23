@@ -95,6 +95,21 @@ class BaseDao {
     return $this->pdo()->lastInsertId();
   }
 
+  public function transaction(callable $operation) {
+    if ($this->pdo()->inTransaction()) {
+      return $operation();
+    }
+    $this->begin();
+    try {
+      $result = $operation();
+      $this->commit();
+      return $result;
+    } catch (Throwable $error) {
+      $this->rollback();
+      throw $error;
+    }
+  }
+
   protected function begin(): void { $this->pdo()->beginTransaction(); }
   protected function commit(): void { $this->pdo()->commit(); }
   protected function rollback(): void { if ($this->pdo()->inTransaction()) $this->pdo()->rollBack(); }

@@ -4,6 +4,7 @@ Milestones delivered:
 
 - Milestone 1: Fully styled static SPA frontend (tabs, modals, mock data).
 - Milestone 2: MySQL schema and PHP PDO DAO layer with test script.
+- Milestone 3: FlightPHP CRUD API, Swagger, and Open Library related reading.
 
 ## Tech Stack
 
@@ -135,6 +136,44 @@ Run the test script (PowerShell from project root):
 ```
 php backend\test_dao.php
 ```
+
+## Milestone 3 ? REST API and Swagger
+
+The FlightPHP API provides CRUD for users, categories, tags, posts, and comments.
+Post tags are managed through `GET /posts/{id}/tags` and `PUT /posts/{id}/tags`.
+The API also supports comment moderation and lookup by email or name.
+Write requests use JSON. User creation takes a `password` and hashes it on the server.
+
+### Run locally
+
+1. Start MySQL and follow the schema and `.env` setup above. Import the seed only
+   into a fresh database.
+2. Use PHP 8 with PDO MySQL, mbstring, and cURL enabled in Apache’s PHP configuration.
+   Run `composer install` inside
+   `backend` to install FlightPHP and swagger-php.
+3. Serve the project with Apache. Place it in `htdocs` or map an Apache Alias to
+   the project directory. Enable `mod_rewrite` and allow `.htaccess` overrides
+   with `AllowOverride All` for the project directory. Start Apache.
+4. If your local site is mounted at `/blogplatform`, open
+   [Swagger UI](http://localhost/blogplatform/backend/public/v1/docs/).
+   The [OpenAPI JSON](http://localhost/blogplatform/backend/public/v1/docs/swagger.php)
+   is available from the same directory. Substitute your local mount path as needed.
+
+### Related reading
+
+`GET /related-reading?q=PHP+programming` returns up to five books with titles,
+authors, and links for a given blog topic. The service uses the
+[Open Library Search API](https://openlibrary.org/dev/docs/api/search), which
+requires no API key for this request. Requests time out after ten seconds.
+Provider failures return a friendly HTTP `503` and are written to
+`backend/logs/error.log`. Give the web server write access to that directory
+or permission to create it under `backend`. The related-reading UI is part
+of the Milestone 4 frontend integration.
+
+The seeded admin is `amina@example.com` (`BlogAdmin2026!`). A seeded regular
+user is `marko@example.com` (`BlogDemo2026!`). These are demonstration accounts
+for the sample database. Authentication and protected routes arrive in Milestone 4.
+The Milestone 3 API is intended for local use.
 
 ## Running Frontend Locally
 
